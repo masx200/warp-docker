@@ -1,4 +1,4 @@
-#!/bin/bashdock
+#!/bin/bash
 warp-svc >/dev/null 2>&1 &
 while :; do
     warp-cli --accept-tos registration new >/dev/null 2>&1

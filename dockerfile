@@ -15,5 +15,6 @@ RUN apt update && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
 WORKDIR /root/
-COPY entrypoint.sh /root/
-ENTRYPOINT ["/bin/sh", "/root/entrypoint.sh"]
+COPY entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["bash", "/entrypoint.sh"]
