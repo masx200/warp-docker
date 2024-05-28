@@ -2,5 +2,5 @@
 usage:
 ```Shell
 docker run --privileged \
-	ethanscully/warp
+	-it ethanscully/warp
 ```
