@@ -16,7 +16,7 @@ while :; do
 done
 entry
 if [ -z "$1" ]; then
-    bash
+    exec bash
 else
     exec "$@"
 fi
