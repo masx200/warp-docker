@@ -9,7 +9,7 @@ RUN CGO_ENABLED=0 \
 FROM --platform=$TARGETPLATFORM debian:stable-slim
 COPY --from=build /build/exec /usr/local/bin/entry
 COPY entrypoint.sh /
-RUN apt update && apt install curl gpg -y && \
+RUN apt update && apt install curl gpg dbus -y && \
     curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | \
     gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg && \
     echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ bookworm main" | \

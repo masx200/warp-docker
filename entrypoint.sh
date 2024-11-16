@@ -1,4 +1,15 @@
 #!/bin/bash
+# dependencies  // stole from https://github.com/cmj2002/warp-docker/
+if [ ! -e /dev/net/tun ]; then
+    mkdir -p /dev/net
+    mknod /dev/net/tun c 10 200
+    chmod 600 /dev/net/tun
+fi
+mkdir -p /run/dbus
+if [ -f /run/dbus/pid ]; then
+    rm /run/dbus/pid
+fi
+dbus-daemon --config-file=/usr/share/dbus-1/system.conf
 # Setup Logs
 mkdir -p /var/log/warp
 # Start Warp Service
