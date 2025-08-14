@@ -30,8 +30,14 @@ while :; do
     fi
     sleep .1
 done
-# Start Go Program
-entry
+# Wait for VPN to fully start
+while true; do
+    code=$(curl -s -o /dev/null -w "%{http_code}" http://1.1.1.1/)
+    if [ "$code" -eq 301 ]; then
+        break
+    fi
+    sleep 0.1
+done
 # Transfer Control to CMD
 if [ -z "$1" ]; then
     exec bash
