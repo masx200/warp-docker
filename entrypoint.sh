@@ -14,6 +14,23 @@ dbus-daemon --config-file=/usr/share/dbus-1/system.conf
 mkdir -p /var/log/warp
 # Start Warp Service
 warp-svc > /var/log/warp/svc.log 2> /var/log/warp/svc-err.log &
+while :; do
+    warp-cli --accept-tos status >> /var/log/warp/cli.log 2>> /var/log/warp/cli-err.log
+    if [ $? -eq 0 ]; then
+        break
+    fi
+    sleep .1
+done
+
+
+warp-cli --accept-tos mode warp+doh >> /var/log/warp/cli.log 2>> /var/log/warp/cli-err.log
+# 现在由于wireguard被qos,只能使用masque协议,新版本使用的默认协议为wireguard,版本号是2025.6.1335.0
+warp-cli --accept-tos tunnel protocol set MASQUE >> /var/log/warp/cli.log 2>> /var/log/warp/cli-err.log
+
+
+
+warp-cli --accept-tos registration delete >> /var/log/warp/cli.log 2>> /var/log/warp/cli-err.log
+
 # Register to Warp
 while :; do
     warp-cli --accept-tos registration new >> /var/log/warp/cli.log 2>> /var/log/warp/cli-err.log
@@ -32,8 +49,8 @@ while :; do
 done
 # Wait for VPN to fully start
 while true; do
-    code=$(curl -s -o /dev/null -w "%{http_code}" http://1.1.1.1/)
-    if [ "$code" -eq 301 ]; then
+    code=$(curl -s -o /dev/null -w "%{http_code}"  --http2 https://www.cloudflare.com)
+    if [ "$code" -eq 200 ]; then
         break
     fi
     sleep 0.1

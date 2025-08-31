@@ -1,0 +1,1 @@
+ docker build -f dockerfile -t "docker.cnb.cool/masx200/docker_mirror/warp-docker:latest" 

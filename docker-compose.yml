@@ -1,0 +1,173 @@
+name: "warp-docker-http-proxy-go-server"
+
+networks:
+  dpanel-network:
+    external: true
+    name: "dpanel-network"
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: "172.31.123.0/24"
+        - subnet: "fd12:5687:4425:5555::/64"
+
+services:
+  http-proxy-go-server:
+    privileged: true
+    networks:
+      - "dpanel-network"
+    ports:
+      - "58877:58877/tcp"
+
+    cap_drop:
+      - "CAP_AUDIT_CONTROL"
+      - "CAP_BLOCK_SUSPEND"
+      - "CAP_DAC_READ_SEARCH"
+      - "CAP_IPC_LOCK"
+      - "CAP_IPC_OWNER"
+      - "CAP_LEASE"
+      - "CAP_LINUX_IMMUTABLE"
+      - "CAP_MAC_ADMIN"
+      - "CAP_MAC_OVERRIDE"
+      - "CAP_NET_ADMIN"
+      - "CAP_NET_BROADCAST"
+      - "CAP_SYSLOG"
+      - "CAP_SYS_ADMIN"
+      - "CAP_SYS_BOOT"
+      - "CAP_SYS_MODULE"
+      - "CAP_SYS_NICE"
+      - "CAP_SYS_PACCT"
+      - "CAP_SYS_PTRACE"
+      - "CAP_SYS_RAWIO"
+      - "CAP_SYS_RESOURCE"
+      - "CAP_SYS_TIME"
+      - "CAP_SYS_TTY_CONFIG"
+      - "CAP_WAKE_ALARM"
+
+    command:
+      - "sh"
+      - "-c"
+      - "-x"
+      - "'./main' '-dohurl' 'https://doh-server.masx200.ddns-ip.net' '-dohip' '104.21.14.41' '--dohalpn=h2'\
+        \ '-port' '58877' '-username' 'admin' '-password' '<password>' '-dohalpn=h3'\
+        \ '-dohurl' 'https://doh-server.masx200.ddns-ip.net' '--dohip=2606:4700:3031::ac43:9db6'"
+
+    container_name: "http-proxy-go-server"
+
+    environment:
+      - "GOLANG_VERSION=1.24.4"
+      - "GOTOOLCHAIN=local"
+      - "GOPATH=/go"
+      - "TZ=Asia/Shanghai"
+      - "PATH=/go/bin:/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+    # hostname: "a078e842ffa2"
+
+    image: "docker.cnb.cool/masx200/docker_mirror/http-proxy-go-server:latest"
+
+    ipc: "private"
+
+    labels:
+      com.docker.compose.config-hash: "9acd9ec10af0426625c59ca86f2b4ce8d99fe08bb6a977c62e93bdef4abba80b"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: ""
+      com.docker.compose.image: "sha256:5b9939be7c4c4fb8a0956054d1e7a5c8baa743cef376917cbeb71fc80da4ca69"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "http-proxy-go-server"
+      com.docker.compose.project.config_files: "f:\\portainer\\data\\compose\\98\\docker-compose.yml"
+      com.docker.compose.project.working_dir: "f:\\portainer\\data\\compose\\98"
+      com.docker.compose.service: "http-proxy-go-server"
+      com.docker.compose.version: ""
+      createdBy: "Apps"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "100m"
+
+    restart: "always"
+
+    stdin_open: true
+
+    tty: true
+
+    working_dir: "/app"
+
+  warp-docker:
+    # command: ["sh","-c","-x","while true; do   warp-cli --accept-tos --json --verbose status;sleep 10; done;"]
+    depends_on:
+      - "http-proxy-go-server"
+    network_mode: "container:http-proxy-go-server"
+    cap_add: 
+      - MKNOD
+      - AUDIT_WRITE
+      - "NET_ADMIN"
+    cap_drop:
+      - "AUDIT_CONTROL"
+      - "BLOCK_SUSPEND"
+      - "DAC_READ_SEARCH"
+      - "IPC_LOCK"
+      - "IPC_OWNER"
+      - "LEASE"
+      - "LINUX_IMMUTABLE"
+      - "MAC_ADMIN"
+      - "MAC_OVERRIDE"
+      - "NET_BROADCAST"
+      - "SYSLOG"
+      - "SYS_ADMIN"
+      - "SYS_BOOT"
+      - "SYS_MODULE"
+      - "SYS_NICE"
+      - "SYS_PACCT"
+      - "SYS_PTRACE"
+      - "SYS_RAWIO"
+      - "SYS_RESOURCE"
+      - "SYS_TIME"
+      - "SYS_TTY_CONFIG"
+      - "WAKE_ALARM"
+
+    container_name: "warp-docker"
+    sysctls:
+      - "net.ipv6.conf.all.disable_ipv6=0"
+      - "net.ipv4.conf.all.src_valid_mark=1"
+
+    devices:
+      - "/dev/net/tun:/dev/net/tun"
+
+    entrypoint: ["bash","-x", "/entrypoint.sh","/status.sh"]
+      
+      # - "bash"
+      # - "-x"
+      # - "-c"
+      # - "rm -frv /var/lib/cloudflare-warp/* /var/log/warp/* && bash -x   /entrypoint.sh   \"sh\" \"-c\" \"-x\" \"while true; do   warp-cli --accept-tos --json --verbose status;sleep 10; done;\""
+
+    environment:
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+    # hostname: "a078e842ffa2"
+    # image: "docker.cnb.cool/masx200/docker_mirror/ddn-k8s-docker.io-ethanscully-warp:latest-linux-amd64"
+    # image: "swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/ethanscully/warp:latest"
+    image: "docker.cnb.cool/masx200/docker_mirror/warp-docker:latest"
+    ipc: "private"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    privileged: true
+
+    restart: "always"
+
+    security_opt:
+      - "label=disable"
+
+    stdin_open: true
+
+    tty: true
+
+    # volumes:
+      # - "f:/docker/warp-docker/var/lib/cloudflare-warp:/var/lib/cloudflare-warp"
+      # - "f:/docker/warp-docker/var/log/warp/:/var/log/warp/"
+
+version: "3.6"
