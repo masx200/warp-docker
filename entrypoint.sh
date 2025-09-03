@@ -49,7 +49,7 @@ while :; do
 done
 # Wait for zero trust to fully start
 while true; do
-    code=$(curl -s -o /dev/null -w "%{http_code}"  --http2 https://www.cloudflare.com)
+    code=$(curl -s -o /dev/null -w "%{http_code}"  --http2 https://www.cloudflare.com   --max-time 10  --connect-timeout 10)
     if [ "$code" -eq 200 ]; then
         break
     fi
