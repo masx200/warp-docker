@@ -48,9 +48,13 @@ services:
       - "sh"
       - "-c"
       - "-x"
-      - "'./main' '-dohurl' 'https://doh-server.masx200.ddns-ip.net' '-dohip' '104.21.14.41' '--dohalpn=h2'\
+      - "'./main'\
+        \ '-dohurl' 'https://doh-server.masx200.ddns-ip.net' '-dohip' '104.21.14.41' '--dohalpn=h2'\
         \ '-port' '58877' '-username' 'admin' '-password' '<password>' '-dohalpn=h3'\
-        \ '-dohurl' 'https://doh-server.masx200.ddns-ip.net' '--dohip=2606:4700:3031::ac43:9db6'"
+        \ '-dohurl' 'https://doh-server.masx200.ddns-ip.net' '--dohip=2606:4700:3031::ac43:9db6'   '-dohurl' 'https://one.one.one.one/dns-query' '-dohip' '1.0.0.1' '--dohalpn=h2'\
+        \ '-dohurl' 'https://one.one.one.one/dns-query' '-dohip' '2606:4700:4700::1001' '--dohalpn=h2'\
+        \ '-dohurl' 'https://one.one.one.one/dns-query' '-dohip' '1.0.0.1' '--dohalpn=h3'\
+        \ '-dohurl' 'https://one.one.one.one/dns-query' '-dohip' '2606:4700:4700::1001' '--dohalpn=h3'  "
 
     container_name: "http-proxy-go-server"
 
