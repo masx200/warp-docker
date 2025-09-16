@@ -12,7 +12,7 @@ do
     
     tail /var/log/warp/svc.log;
     warp-cli --accept-tos --json --verbose status;
-    sleep 1;
+    sleep 5;
     
     
 done;
