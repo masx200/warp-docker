@@ -41,8 +41,6 @@ services:
       - "TZ=Asia/Shanghai"
       - "PATH=/go/bin:/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
-    # hostname: "a078e842ffa2"
-
     image: "docker.cnb.cool/masx200/docker_mirror/http-proxy-go-server:2.6.0"
 
     ipc: "private"
@@ -62,7 +60,6 @@ services:
     working_dir: "/app"
 
   warp-docker:
-    # command: ["sh","-c","-x","while true; do   warp-cli --accept-tos --json --verbose status;sleep 10; done;"]
     depends_on:
       - "http-proxy-go-server"
     network_mode: "container:http-proxy-go-server"
@@ -82,17 +79,9 @@ services:
     entrypoint:
       ["bash", "-x", "/entrypoint.sh", "/status.sh"]
 
-    # - "bash"
-    # - "-x"
-    # - "-c"
-    # - "rm -frv /var/lib/cloudflare-warp/* /var/log/warp/* && bash -x   /entrypoint.sh   \"sh\" \"-c\" \"-x\" \"while true; do   warp-cli --accept-tos --json --verbose status;sleep 10; done;\""
-
     environment:
       - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
-    # hostname: "a078e842ffa2"
-    # image: "docker.cnb.cool/masx200/docker_mirror/ddn-k8s-docker.io-ethanscully-warp:latest-linux-amd64"
-    # image: "swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/ethanscully/warp:latest"
     image: "docker.cnb.cool/masx200/docker_mirror/warp-docker:latest"
     ipc: "private"
 
@@ -111,11 +100,8 @@ services:
 
     tty: true
 
-    # volumes:
-    # - "f:/docker/warp-docker/var/lib/cloudflare-warp:/var/lib/cloudflare-warp"
-    # - "f:/docker/warp-docker/var/log/warp/:/var/log/warp/"
 
-  curl-monitor: # 新增的curl容器
+  curl-monitor:
     depends_on:
       - "http-proxy-go-server"
     privileged: true
