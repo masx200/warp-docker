@@ -1,10 +1,12 @@
 # WARP Docker
 
-一个基于 Docker 的 Cloudflare WARP 客户端实现，提供安全的 zero trust 连接和 HTTP 代理服务。
+一个基于 Docker 的 Cloudflare WARP 客户端实现，提供安全的 zero trust 连接和 HTTP
+代理服务。
 
 ## 项目概述
 
-本项目提供了一个完整的 Docker 化解决方案，用于运行 Cloudflare WARP 客户端。它包含两个主要服务：
+本项目提供了一个完整的 Docker 化解决方案，用于运行 Cloudflare WARP
+客户端。它包含两个主要服务：
 
 1. **HTTP 代理服务器** - 提供 HTTP/HTTPS 代理服务
 2. **WARP Docker** - Cloudflare WARP zero trust 客户端
@@ -273,7 +275,8 @@ entrypoint: ["bash", "-x", "/entrypoint.sh", "/status.sh"]
 
 ## 许可证
 
-本项目基于 [ethanscully/warp-docker](https://github.com/ethanscully/warp-docker) 项目，遵循相应的开源许可证。
+本项目基于 [ethanscully/warp-docker](https://github.com/ethanscully/warp-docker)
+项目，遵循相应的开源许可证。
 
 ## 贡献
 

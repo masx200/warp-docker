@@ -82,10 +82,10 @@ services:
     entrypoint:
       ["bash", "-x", "/entrypoint.sh", "/status.sh"]
 
-      # - "bash"
-      # - "-x"
-      # - "-c"
-      # - "rm -frv /var/lib/cloudflare-warp/* /var/log/warp/* && bash -x   /entrypoint.sh   \"sh\" \"-c\" \"-x\" \"while true; do   warp-cli --accept-tos --json --verbose status;sleep 10; done;\""
+    # - "bash"
+    # - "-x"
+    # - "-c"
+    # - "rm -frv /var/lib/cloudflare-warp/* /var/log/warp/* && bash -x   /entrypoint.sh   \"sh\" \"-c\" \"-x\" \"while true; do   warp-cli --accept-tos --json --verbose status;sleep 10; done;\""
 
     environment:
       - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
